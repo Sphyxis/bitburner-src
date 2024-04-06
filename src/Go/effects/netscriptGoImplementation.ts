@@ -36,7 +36,7 @@ export async function makePlayerMove(logger: (s: string) => void, x: number, y: 
   const moveWasMade = makeMove(boardState, x, y, GoColor.black);
 
   if (validity !== GoValidity.valid || !moveWasMade) {
-    await sleep(500);
+    await sleep(4);
     logger(`ERROR: Invalid move: ${validity}`);
 
     if (validity === GoValidity.notYourTurn) {
@@ -49,7 +49,7 @@ export async function makePlayerMove(logger: (s: string) => void, x: number, y: 
   GoEvents.emit();
   logger(`Go move played: ${x}, ${y}`);
   const response = getAIMove(logger, boardState);
-  await sleep(300);
+  await sleep(4);
   return response;
 }
 
@@ -74,7 +74,7 @@ async function getAIMove(logger: (s: string) => void, boardState: BoardState, su
       return resolve({ ...result, success });
     }
 
-    await sleep(400);
+    await sleep(4);
     const aiUpdatedBoard = makeMove(boardState, result.x, result.y, GoColor.white);
     if (!aiUpdatedBoard) {
       boardState.previousPlayer = GoColor.white;
