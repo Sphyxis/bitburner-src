@@ -255,7 +255,6 @@ export function NetscriptSleeve(): InternalAPI<NetscriptSleeve> {
         const actionId: ActionIdentifier = { type: BladeActionType.contract, name: contract };
         Player.sleeves[sleeveNumber].startWork(new SleeveBladeburnerWork({ actionId }));
       }
-      //return Player.sleeves[sleeveNumber].bladeburner(action);
       return Player.sleeves[sleeveNumber].bladeburner(action, ctract);
     },
   };
