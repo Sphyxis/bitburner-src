@@ -238,8 +238,10 @@ export function NetscriptSleeve(): InternalAPI<NetscriptSleeve> {
       const action = helpers.string(ctx, "action", _action);
       checkSleeveAPIAccess(ctx);
       checkSleeveNumber(ctx, sleeveNumber);
+      let ctract = undefined;
       if (action === "Take on contracts") {
         const contract = getEnumHelper("BladeContractName").nsGetMember(ctx, _contract);
+        ctract = helpers.string(ctx, "contract", _contract);
         for (let i = 0; i < Player.sleeves.length; ++i) {
           if (i === sleeveNumber) continue;
           const otherWork = Player.sleeves[i].currentWork;
@@ -253,8 +255,8 @@ export function NetscriptSleeve(): InternalAPI<NetscriptSleeve> {
         const actionId: ActionIdentifier = { type: BladeActionType.contract, name: contract };
         Player.sleeves[sleeveNumber].startWork(new SleeveBladeburnerWork({ actionId }));
       }
-
-      return Player.sleeves[sleeveNumber].bladeburner(action);
+      //return Player.sleeves[sleeveNumber].bladeburner(action);
+      return Player.sleeves[sleeveNumber].bladeburner(action, ctract);
     },
   };
 
