@@ -212,6 +212,8 @@ export function initBitNodes() {
         Level 2: 12%
         <br />
         Level 3: 14%
+        <br />
+        Level 3: Start with Blades Simulacrum
       </>
     ),
   );
