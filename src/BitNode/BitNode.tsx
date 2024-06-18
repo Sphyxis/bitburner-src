@@ -198,13 +198,14 @@ export function initBitNodes() {
         <br />
         <br />
         In this BitNode you will be able to access the {FactionName.Bladeburners} Division at the NSA, which provides a
-        new mechanic for progression.
+        new mechanic for progression and through the {FactionName.Bladeburners} API, which allows you to access{" "}
+        {FactionName.Bladeburners} functionality through Netscript.
         <br />
         <br />
         Destroying this BitNode will give you Source-File 6, or if you already have this Source-File it will upgrade its
-        level up to a maximum of 3. This Source-File allows you to access the NSA's {FactionName.Bladeburners} Division
-        in other BitNodes. In addition, this Source-File will raise both the level and experience gain rate of all your
-        combat stats by:
+        level up to a maximum of 3. This Source-File allows you to access the {FactionName.Bladeburners} through the NSA
+        and the API. In addition, this Source-File will raise both the level and experience gain rate of all your combat
+        stats by:
         <br />
         <br />
         Level 1: 8%
@@ -229,14 +230,14 @@ export function initBitNodes() {
         models that were stronger, faster, and more intelligent than the humans that had created them.
         <br />
         <br />
-        In this BitNode you will be able to access the {FactionName.Bladeburners} API, which allows you to access{" "}
+        In this BitNode you will be able to access the {FactionName.Bladeburners} Division at the NSA, which provides a
+        new mechanic for progression and through the {FactionName.Bladeburners} API, which allows you to access{" "}
         {FactionName.Bladeburners} functionality through Netscript.
         <br />
         <br />
         Destroying this BitNode will give you Source-File 7, or if you already have this Source-File it will upgrade its
-        level up to a maximum of 3. This Source-File allows you to access the {FactionName.Bladeburners} Netscript API
-        in other BitNodes. In addition, this Source-File will increase all of your {FactionName.Bladeburners}{" "}
-        multipliers by:
+        level up to a maximum of 3. This Source-File allows you to access the {FactionName.Bladeburners} through the NSA
+        and the API. In addition, this Source-File will increase all of your {FactionName.Bladeburners} multipliers by:
         <br />
         <br />
         Level 1: 8%
@@ -244,6 +245,8 @@ export function initBitNodes() {
         Level 2: 12%
         <br />
         Level 3: 14%
+        <br />
+        Level 3: Start with Blades Simulacrum augmentation
       </>
     ),
   );

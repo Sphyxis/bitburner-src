@@ -18,7 +18,8 @@ export function NetscriptBladeburner(): InternalAPI<INetscriptBladeburner> {
     return;
   };
   const getBladeburner = function (ctx: NetscriptContext): Bladeburner {
-    const apiAccess = Player.bitNodeN === 7 || Player.sourceFileLvl(7) > 0;
+    const apiAccess =
+      Player.bitNodeN === 6 || Player.sourceFileLvl(6) > 0 || Player.bitNodeN === 7 || Player.sourceFileLvl(7) > 0;
     if (!apiAccess) {
       throw helpers.errorMessage(ctx, "You have not unlocked the Bladeburner API.", "API ACCESS");
     }
