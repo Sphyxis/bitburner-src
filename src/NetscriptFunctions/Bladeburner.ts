@@ -27,6 +27,21 @@ export function NetscriptBladeburner(): InternalAPI<INetscriptBladeburner> {
       throw helpers.errorMessage(ctx, "You must be a member of the Bladeburner division to use this API.");
     return bladeburner;
   };
+  const checkSleeveAPIAccess = function (ctx: NetscriptContext) {
+    if (Player.bitNodeN !== 10 && !Player.sourceFileLvl(10)) {
+      throw helpers.errorMessage(
+        ctx,
+        "You do not currently have access to the Sleeve API. This is either because you are not in BitNode-10 or because you do not have Source-File 10",
+      );
+    }
+  };
+  const checkSleeveNumber = function (ctx: NetscriptContext, sleeveNumber: number) {
+    if (sleeveNumber >= Player.sleeves.length || sleeveNumber < 0) {
+      const msg = `Invalid sleeve number: ${sleeveNumber}`;
+      helpers.log(ctx, () => msg);
+      throw helpers.errorMessage(ctx, msg);
+    }
+  };
 
   function getAction(ctx: NetscriptContext, type: unknown, name: unknown): Action {
     const bladeburner = Player.bladeburner;
@@ -117,10 +132,20 @@ export function NetscriptBladeburner(): InternalAPI<INetscriptBladeburner> {
         1000
       );
     },
-    getActionEstimatedSuccessChance: (ctx) => (type, name) => {
+    getActionEstimatedSuccessChance: (ctx) => (type, name, _sleeve) => {
       const bladeburner = getBladeburner(ctx);
       const action = getAction(ctx, type, name);
-      return action.getSuccessRange(bladeburner, Player);
+      if (_sleeve !== undefined) {
+        checkSleeveAPIAccess(ctx);
+        const sleeveNumber = helpers.number(ctx, "sleeve", _sleeve);
+        checkSleeveNumber(ctx, sleeveNumber);
+        if (action.type === BladeActionType.contract) {
+          const sleevePerson = Player.sleeves[sleeveNumber];
+          return action.getSuccessRange(bladeburner, sleevePerson);
+        } else return [0, 0];
+      } else {
+        return action.getSuccessRange(bladeburner, Player);
+      }
     },
     getActionRepGain: (ctx) => (type, name, _level) => {
       checkBladeburnerAccess(ctx);
