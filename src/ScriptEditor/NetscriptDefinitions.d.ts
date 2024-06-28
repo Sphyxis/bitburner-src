@@ -3117,7 +3117,7 @@ export interface Bladeburner {
    * @param sleeve - Optional.  Sleeve number to check for success.
    * @returns Estimated success chance for the specified action.
    */
-  getActionEstimatedSuccessChance(type: string, name: string, sleeve: number = undefined): [number, number];
+  getActionEstimatedSuccessChance(type: string, name: string, sleeve?: number): [number, number];
 
   /**
    * Get the reputation gain of an action.

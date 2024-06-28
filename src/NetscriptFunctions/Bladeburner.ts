@@ -11,6 +11,7 @@ import { getEnumHelper } from "../utils/EnumHelper";
 import { Skills } from "../Bladeburner/data/Skills";
 import { assertString } from "../Netscript/TypeAssertion";
 import { BlackOperations, blackOpsArray } from "../Bladeburner/data/BlackOperations";
+import { checkSleeveAPIAccess, checkSleeveNumber } from "../NetscriptFunctions/Sleeve";
 
 export function NetscriptBladeburner(): InternalAPI<INetscriptBladeburner> {
   const checkBladeburnerAccess = function (ctx: NetscriptContext): void {
@@ -27,22 +28,6 @@ export function NetscriptBladeburner(): InternalAPI<INetscriptBladeburner> {
       throw helpers.errorMessage(ctx, "You must be a member of the Bladeburner division to use this API.");
     return bladeburner;
   };
-  const checkSleeveAPIAccess = function (ctx: NetscriptContext) {
-    if (Player.bitNodeN !== 10 && !Player.sourceFileLvl(10)) {
-      throw helpers.errorMessage(
-        ctx,
-        "You do not currently have access to the Sleeve API. This is either because you are not in BitNode-10 or because you do not have Source-File 10",
-      );
-    }
-  };
-  const checkSleeveNumber = function (ctx: NetscriptContext, sleeveNumber: number) {
-    if (sleeveNumber >= Player.sleeves.length || sleeveNumber < 0) {
-      const msg = `Invalid sleeve number: ${sleeveNumber}`;
-      helpers.log(ctx, () => msg);
-      throw helpers.errorMessage(ctx, msg);
-    }
-  };
-
   function getAction(ctx: NetscriptContext, type: unknown, name: unknown): Action {
     const bladeburner = Player.bladeburner;
     assertString(ctx, "type", type);
@@ -135,7 +120,7 @@ export function NetscriptBladeburner(): InternalAPI<INetscriptBladeburner> {
     getActionEstimatedSuccessChance: (ctx) => (type, name, _sleeve) => {
       const bladeburner = getBladeburner(ctx);
       const action = getAction(ctx, type, name);
-      if (_sleeve !== undefined) {
+      if (_sleeve != null) {
         checkSleeveAPIAccess(ctx);
         const sleeveNumber = helpers.number(ctx, "sleeve", _sleeve);
         checkSleeveNumber(ctx, sleeveNumber);
