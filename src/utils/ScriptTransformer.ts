@@ -154,6 +154,41 @@ export function getModuleScript(
   return script;
 }
 
+interface TransformScriptCacheEntry {
+  scriptCode: string;
+  sourceMap: string | undefined;
+}
+
+const transformScriptCache = new Map<FileType, Map<string, TransformScriptCacheEntry>>();
+
+function getCachedTransformScript(code: string, fileType: FileType): TransformScriptCacheEntry | undefined {
+  const byCode = transformScriptCache.get(fileType);
+  if (!byCode) return undefined;
+
+  const cached = byCode.get(code);
+  if (!cached) return undefined;
+
+  byCode.delete(code);
+  byCode.set(code, cached);
+  return cached;
+}
+
+function setCachedTransformScript(
+  code: string,
+  fileType: FileType,
+  entry: TransformScriptCacheEntry,
+): TransformScriptCacheEntry {
+  let byCode = transformScriptCache.get(fileType);
+  if (!byCode) {
+    byCode = new Map();
+    transformScriptCache.set(fileType, byCode);
+  }
+
+  if (!byCode.has(code)) byCode.set(code, entry);
+
+  return entry;
+}
+
 /**
  * This function must be synchronous to avoid race conditions. Check https://github.com/bitburner-official/bitburner-src/pull/1173#issuecomment-2026940461
  * for more information.
@@ -165,6 +200,9 @@ export function transformScript(
   if (supportedFileTypes.every((v) => v !== fileType)) {
     throw new Error(`Invalid file type: ${fileType}`);
   }
+  //Pull from cache first
+  const cached = getCachedTransformScript(code, fileType);
+  if (cached) return cached;
   const fileTypeFeature = getFileTypeFeature(fileType);
   let parserConfig: ParserConfig;
   if (fileTypeFeature.isTypeScript) {
@@ -190,8 +228,8 @@ export function transformScript(
     },
     sourceMaps: true,
   });
-  return {
+  return setCachedTransformScript(code, fileType, {
     scriptCode: result.code,
     sourceMap: result.map,
-  };
+  });
 }
